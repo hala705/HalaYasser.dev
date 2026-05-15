@@ -532,6 +532,161 @@
     max-width: fit-content;
   }
   @keyframes typing { from { width: 0 } to { width: 100% } }
+
+  /* ─── INTERNSHIP RADAR ─── */
+  #internship { background: rgba(0,255,102,0.018); }
+  .radar-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .radar-status-header {
+    display: flex; align-items: center; gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  .radar-pulse {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 0 rgba(0,255,102,0.7);
+    animation: radarPulse 1.6s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes radarPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(0,255,102,0.7); }
+    70%  { box-shadow: 0 0 0 10px rgba(0,255,102,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,255,102,0); }
+  }
+  .radar-status-text {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--green); letter-spacing: 0.12em;
+  }
+  .radar-sys-line {
+    font-family: var(--mono); font-size: 0.75rem;
+    line-height: 2; padding: 0.15rem 0;
+  }
+  .radar-key { color: var(--graylight); }
+  .radar-val-green { color: var(--green); font-weight: 500; }
+  .radar-val-blue  { color: var(--blue); }
+  .radar-val-yellow{ color: var(--yellow); }
+
+  .roles-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.55rem; margin-top: 1.2rem;
+  }
+  .role-chip {
+    font-family: var(--mono); font-size: 0.62rem;
+    padding: 6px 10px;
+    border: 1px solid;
+    letter-spacing: 0.05em;
+    position: relative;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: background 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .role-chip:hover { transform: translateX(3px); }
+  .role-chip::before { content: '▶'; font-size: 0.5rem; }
+  .role-chip.rc-g { color: var(--green); border-color: rgba(0,255,102,0.35); background: rgba(0,255,102,0.04); }
+  .role-chip.rc-g:hover { background: rgba(0,255,102,0.12); }
+  .role-chip.rc-b { color: var(--blue);  border-color: rgba(0,207,255,0.35); background: rgba(0,207,255,0.04); }
+  .role-chip.rc-b:hover { background: rgba(0,207,255,0.12); }
+  .role-chip.rc-p { color: var(--pink);  border-color: rgba(255,79,200,0.35); background: rgba(255,79,200,0.04); }
+  .role-chip.rc-p:hover { background: rgba(255,79,200,0.12); }
+  .role-chip.rc-y { color: var(--yellow);border-color: rgba(255,225,86,0.35); background: rgba(255,225,86,0.04); }
+  .role-chip.rc-y:hover { background: rgba(255,225,86,0.12); }
+
+  /* value card (ripped paper) */
+  .radar-rip {
+    background: var(--paper);
+    color: #2a2520;
+    padding: 1.4rem 1.6rem 1.6rem;
+    position: relative;
+    box-shadow: 4px 4px 0 #b8b099, 0 10px 32px rgba(0,0,0,0.55);
+    transform: rotate(0.6deg);
+  }
+  .radar-rip::before {
+    content: '';
+    position: absolute; top: -7px; left: 0; right: 0; height: 8px;
+    background: var(--paper);
+    clip-path: polygon(0% 100%, 2% 0%, 5% 90%, 8% 10%, 11% 85%, 14% 5%, 17% 80%, 21% 20%, 24% 95%, 27% 0%, 30% 75%, 34% 30%, 37% 90%, 41% 5%, 44% 80%, 48% 15%, 51% 95%, 55% 0%, 58% 85%, 62% 20%, 65% 90%, 69% 5%, 72% 80%, 76% 25%, 79% 95%, 83% 0%, 86% 70%, 90% 15%, 93% 85%, 97% 0%, 100% 60%, 100% 100%);
+  }
+  .radar-rip::after {
+    content: '';
+    position: absolute; bottom: -7px; left: 0; right: 0; height: 8px;
+    background: var(--paper);
+    clip-path: polygon(0% 0%, 3% 100%, 6% 10%, 9% 90%, 13% 5%, 16% 80%, 20% 20%, 23% 95%, 27% 0%, 30% 75%, 33% 30%, 37% 90%, 40% 5%, 44% 80%, 47% 15%, 51% 95%, 54% 0%, 58% 85%, 61% 20%, 65% 90%, 68% 5%, 72% 80%, 75% 25%, 79% 95%, 82% 0%, 86% 70%, 89% 15%, 93% 85%, 96% 0%, 100% 60%, 100% 0%);
+  }
+  .radar-rip-title {
+    font-family: var(--pixel); font-size: 1.3rem;
+    color: #1a1612; margin-bottom: 0.8rem; letter-spacing: 0.06em;
+  }
+  .value-point {
+    display: flex; gap: 0.6rem; align-items: flex-start;
+    margin-bottom: 0.65rem;
+    font-size: 0.78rem; color: #3a3028; line-height: 1.5;
+  }
+  .value-point .vp-icon {
+    font-family: var(--pixel); font-size: 1rem;
+    flex-shrink: 0; margin-top: 0.05rem;
+  }
+  .value-point strong { color: #1a1612; font-family: var(--mono); font-weight: 600; }
+
+  .tape-label {
+    display: inline-block;
+    background: rgba(255,225,86,0.6);
+    padding: 2px 14px;
+    font-family: var(--mono); font-size: 0.58rem;
+    color: #333; letter-spacing: 0.08em;
+    transform: rotate(-1.5deg);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    margin-bottom: 0.9rem;
+    border-radius: 2px;
+  }
+
+  .radar-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    margin-top: 2rem; align-items: center;
+  }
+  .cta-btn {
+    font-family: var(--mono); font-size: 0.72rem;
+    padding: 10px 20px;
+    border: 1px solid;
+    cursor: pointer;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .cta-btn:hover::before { opacity: 0.1; }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+  .cta-primary { color: var(--green); border-color: var(--green); box-shadow: 2px 2px 0 var(--green); }
+  .cta-primary:hover { box-shadow: 4px 4px 0 var(--green), 0 6px 20px rgba(0,255,102,0.2); }
+  .cta-secondary { color: var(--blue); border-color: var(--blue); box-shadow: 2px 2px 0 var(--blue); }
+  .cta-secondary:hover { box-shadow: 4px 4px 0 var(--blue), 0 6px 20px rgba(0,207,255,0.2); }
+
+  .scan-line-anim {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    animation: scanMove 3s linear infinite;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  @keyframes scanMove { from { top: 0; } to { top: 100%; } }
+
+  @media (max-width: 900px) {
+    .radar-grid { grid-template-columns: 1fr; }
+    .roles-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -544,6 +699,7 @@
     <li><a href="#projects">projects</a></li>
     <li><a href="#skills">skills</a></li>
     <li><a href="#community">community</a></li>
+    <li><a href="#internship">internship</a></li>
     <li><a href="#contact">contact</a></li>
   </ul>
   <div class="status">
@@ -946,6 +1102,97 @@
         </div>
 
       </div>
+    </div>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ─── INTERNSHIP RADAR ─── -->
+<section id="internship">
+  <div class="section-wrap">
+    <div class="section-label">06 &gt; internship_radar --scan</div>
+    <div class="section-title">$ SYSTEM_STATUS: SEEKING_OPPORTUNITIES</div>
+
+    <div class="radar-grid">
+
+      <!-- Left: Terminal status + roles -->
+      <div>
+        <div class="win-box" style="position:relative; overflow:hidden;">
+          <div class="scan-line-anim"></div>
+          <div class="win-bar">
+            <div class="win-btn close"></div><div class="win-btn min"></div><div class="win-btn max"></div>
+            <div class="win-title">internship_radar.sh — live</div>
+          </div>
+          <div class="win-body">
+
+            <div class="radar-status-header">
+              <div class="radar-pulse"></div>
+              <div class="radar-status-text">ACTIVELY SCANNING FOR OPPORTUNITIES</div>
+            </div>
+
+            <div class="radar-sys-line"><span class="radar-key">SYSTEM_STATUS      </span><span class="radar-val-green">::  INTERNSHIP_SEEKING = TRUE</span></div>
+            <div class="radar-sys-line"><span class="radar-key">AVAILABILITY       </span><span class="radar-val-green">::  OPEN_TO_OFFERS = TRUE</span></div>
+            <div class="radar-sys-line"><span class="radar-key">PREFERRED_MODE     </span><span class="radar-val-blue" >::  [REMOTE] [HYBRID] [ON-SITE]</span></div>
+            <div class="radar-sys-line"><span class="radar-key">LOCATION_BIAS      </span><span class="radar-val-yellow">::  Egypt → Worldwide</span></div>
+            <div class="radar-sys-line"><span class="radar-key">DURATION           </span><span class="radar-val-blue" >::  Summer 2026 / Part-Time</span></div>
+            <div class="radar-sys-line"><span class="radar-key">RESPONSE_TIME      </span><span class="radar-val-green">::  &lt; 24h</span></div>
+
+            <div style="margin-top:1.2rem; font-family:var(--mono); font-size:0.65rem; color:var(--blue); letter-spacing:0.1em; text-transform:uppercase; border-bottom:1px solid rgba(0,207,255,0.2); padding-bottom:0.3rem;">&gt; TARGET_ROLES[]</div>
+            <div class="roles-grid">
+              <div class="role-chip rc-g">Cybersecurity Analyst</div>
+              <div class="role-chip rc-b">Network Defense / Pen Testing</div>
+              <div class="role-chip rc-p">Backend Dev (C++ / Python)</div>
+              <div class="role-chip rc-y">Embedded Systems &amp; IoT</div>
+              <div class="role-chip rc-g">Hardware Security</div>
+              <div class="role-chip rc-b">Software Engineering Intern</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Value card (ripped paper) -->
+      <div style="padding-top:0.5rem;">
+        <div style="position:relative;">
+          <div class="tape-label" style="position:absolute; top:-14px; right:20px; z-index:2;">★ WHY HIRE ME ★</div>
+          <div class="radar-rip">
+            <div class="radar-rip-title">WHAT I BRING TO THE TABLE</div>
+
+            <div class="value-point">
+              <span class="vp-icon" style="color:#1a8a44;">⬡</span>
+              <span><strong>Algorithmic Depth</strong> — Active ICPC competitor with 120+ problems solved in C++. DSA, graphs, and optimization are in my toolkit.</span>
+            </div>
+            <div class="value-point">
+              <span class="vp-icon" style="color:#1a5a8a;">⬡</span>
+              <span><strong>Hardware × Software Bridge</strong> — Built real ESP32 + OpenCV projects. I write firmware, design circuits, and integrate computer vision end-to-end.</span>
+            </div>
+            <div class="value-point">
+              <span class="vp-icon" style="color:#8a1a6a;">⬡</span>
+              <span><strong>Security Mindset</strong> — ALX Cybersecurity graduate. Actively exploring offensive/defensive security, networking protocols, and TryHackMe labs.</span>
+            </div>
+            <div class="value-point">
+              <span class="vp-icon" style="color:#8a7a1a;">⬡</span>
+              <span><strong>Leadership Under Pressure</strong> — Elected Batch Representative &amp; Faculty Leader for my university cohort. I coordinate, communicate, and deliver.</span>
+            </div>
+            <div class="value-point">
+              <span class="vp-icon" style="color:#1a8a44;">⬡</span>
+              <span><strong>MLSA &amp; Community</strong> — Microsoft Learn Student Ambassador — part of a global network of tech leaders and builders.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="radar-cta">
+          <a href="#" class="cta-btn cta-primary">
+            <span style="font-family:var(--pixel); font-size:1rem;">⬇</span>
+            ./download_resume.sh
+          </a>
+          <a href="#contact" class="cta-btn cta-secondary">
+            <span style="font-family:var(--pixel); font-size:1rem;">⚡</span>
+            ./initiate_contact
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
