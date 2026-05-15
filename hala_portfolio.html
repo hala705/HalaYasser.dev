@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hala Yasser Fouad — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code:wght@300;400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --green: #00FF66;
+    --blue: #00CFFF;
+    --pink: #FF4FC8;
+    --yellow: #FFE156;
+    --dark: #0A0C0F;
+    --darker: #060809;
+    --card: #111318;
+    --card2: #181c24;
+    --paper: #EDE8D6;
+    --paper2: #D9D3B8;
+    --gray: #2a2f3a;
+    --graylight: #444c5e;
+    --text: #C8D8C0;
+    --mono: 'Fira Code', monospace;
+    --pixel: 'VT323', monospace;
+    --body: 'IBM Plex Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--darker);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── GLOBAL GRID OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,102,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,102,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── SCANLINES ─── */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  section, nav, footer { position: relative; z-index: 1; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    height: 48px;
+    background: rgba(6,8,9,0.85);
+    border-bottom: 1px solid rgba(0,255,102,0.18);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+  }
+  nav .logo {
+    color: var(--green);
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  nav .logo span { color: var(--blue); }
+  nav ul { list-style: none; display: flex; gap: 1.8rem; }
+  nav ul li a {
+    color: var(--graylight);
+    text-decoration: none;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav ul li a:hover { color: var(--green); }
+  nav .status {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.65rem; color: var(--graylight);
+  }
+  nav .status .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: blink 1.4s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* ─── RETRO WINDOW BOX ─── */
+  .win-box {
+    border: 1px solid var(--graylight);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--card);
+    box-shadow: 0 0 0 1px rgba(0,255,102,0.06), 4px 4px 0 rgba(0,255,102,0.08), 0 8px 32px rgba(0,0,0,0.6);
+  }
+  .win-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 12px;
+    background: var(--gray);
+    border-bottom: 1px solid var(--graylight);
+  }
+  .win-btn {
+    width: 11px; height: 11px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.3);
+  }
+  .win-btn.close { background: #FF5F57; }
+  .win-btn.min   { background: #FFBD2E; }
+  .win-btn.max   { background: #28CA41; }
+  .win-title {
+    flex: 1; text-align: center;
+    font-family: var(--mono); font-size: 0.65rem;
+    color: #777; letter-spacing: 0.06em;
+  }
+  .win-body { padding: 1.4rem 1.6rem; }
+
+  /* ─── TERMINAL LINES ─── */
+  .term-line { font-family: var(--mono); font-size: 0.82rem; line-height: 1.9; }
+  .term-line .prompt { color: var(--green); }
+  .term-line .cmd { color: var(--blue); }
+  .term-line .out { color: var(--text); }
+  .term-line .comment { color: #4a5568; }
+  .cursor {
+    display: inline-block; width: 8px; height: 14px;
+    background: var(--green); vertical-align: middle; margin-left: 2px;
+    animation: blink 0.9s step-end infinite;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 6rem 2rem 3rem;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .hero-terminal { align-self: center; }
+  .hero-scrap {
+    display: flex; flex-direction: column; gap: 1.2rem;
+    align-items: flex-end;
+  }
+  .tape {
+    display: inline-block;
+    background: rgba(255,225,86,0.55);
+    padding: 3px 18px;
+    font-family: var(--mono); font-size: 0.62rem;
+    color: #333; letter-spacing: 0.06em;
+    transform: rotate(-2deg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    border-radius: 2px;
+  }
+
+  /* Ripped paper card */
+  .rip-card {
+    background: var(--paper);
+    color: #2a2520;
+    padding: 1.2rem 1.4rem;
+    position: relative;
+    font-family: var(--body);
+    box-shadow: 3px 3px 0 #b8b099, 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .rip-card::before {
+    content: '';
+    position: absolute; top: -7px; left: 0; right: 0; height: 8px;
+    background: var(--paper);
+    clip-path: polygon(0% 100%, 2% 0%, 5% 90%, 8% 10%, 11% 85%, 14% 5%, 17% 80%, 21% 20%, 24% 95%, 27% 0%, 30% 75%, 34% 30%, 37% 90%, 41% 5%, 44% 80%, 48% 15%, 51% 95%, 55% 0%, 58% 85%, 62% 20%, 65% 90%, 69% 5%, 72% 80%, 76% 25%, 79% 95%, 83% 0%, 86% 70%, 90% 15%, 93% 85%, 97% 0%, 100% 60%, 100% 100%);
+  }
+  .rip-card::after {
+    content: '';
+    position: absolute; bottom: -7px; left: 0; right: 0; height: 8px;
+    background: var(--paper);
+    clip-path: polygon(0% 0%, 3% 100%, 6% 10%, 9% 90%, 13% 5%, 16% 80%, 20% 20%, 23% 95%, 27% 0%, 30% 75%, 33% 30%, 37% 90%, 40% 5%, 44% 80%, 47% 15%, 51% 95%, 54% 0%, 58% 85%, 61% 20%, 65% 90%, 68% 5%, 72% 80%, 75% 25%, 79% 95%, 82% 0%, 86% 70%, 89% 15%, 93% 85%, 96% 0%, 100% 60%, 100% 0%);
+  }
+  .rip-card h1 {
+    font-family: var(--pixel); font-size: 2.6rem;
+    color: #1a1612; line-height: 1.1; letter-spacing: 0.04em;
+  }
+  .rip-card .tagline {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: #5a5040; margin-top: 0.5rem; letter-spacing: 0.05em;
+  }
+  .rip-card .loc {
+    font-size: 0.75rem; color: #7a6a55; margin-top: 0.4rem;
+  }
+
+  .pixel-badge {
+    display: inline-block;
+    font-family: var(--pixel); font-size: 1rem;
+    padding: 4px 12px;
+    border: 2px solid;
+    letter-spacing: 0.1em;
+    image-rendering: pixelated;
+  }
+  .badge-green { color: var(--green); border-color: var(--green); box-shadow: 2px 2px 0 var(--green); }
+  .badge-blue  { color: var(--blue);  border-color: var(--blue);  box-shadow: 2px 2px 0 var(--blue); }
+  .badge-pink  { color: var(--pink);  border-color: var(--pink);  box-shadow: 2px 2px 0 var(--pink); }
+
+  /* ─── SECTION WRAPPER ─── */
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-label {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--green); letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: rgba(0,255,102,0.2);
+  }
+  .section-title {
+    font-family: var(--pixel); font-size: 2.4rem;
+    color: #e0dcc8; margin-bottom: 2.5rem; letter-spacing: 0.04em;
+  }
+
+  /* ─── ABOUT ─── */
+  #about .about-grid {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem;
+  }
+  .about-text p {
+    font-size: 0.88rem; color: #a0b090; line-height: 1.8; margin-bottom: 1rem;
+  }
+  .about-text p strong { color: var(--green); font-family: var(--mono); font-weight: 500; }
+
+  .stat-box {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .stat-card {
+    background: var(--paper2);
+    color: #2a2520;
+    padding: 1rem 1.2rem;
+    position: relative;
+    transform: rotate(1.2deg);
+    box-shadow: 3px 3px 0 #9a9080, 0 4px 16px rgba(0,0,0,0.4);
+  }
+  .stat-card:nth-child(2) { transform: rotate(-0.8deg); }
+  .stat-card:nth-child(3) { transform: rotate(0.4deg); }
+  .stat-card .num {
+    font-family: var(--pixel); font-size: 2.8rem;
+    color: #1a1612; line-height: 1;
+  }
+  .stat-card .lbl {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: #5a5040; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  /* ─── PROJECTS ─── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+  }
+  .polaroid {
+    background: #f5f0e2;
+    padding: 1rem 1rem 2rem;
+    box-shadow: 4px 4px 0 #888, 0 12px 32px rgba(0,0,0,0.6);
+    position: relative;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .polaroid:nth-child(1) { transform: rotate(-2deg); }
+  .polaroid:nth-child(2) { transform: rotate(1.5deg); }
+  .polaroid:nth-child(3) { transform: rotate(-1deg); }
+  .polaroid:hover { transform: rotate(0deg) translateY(-6px) scale(1.02); box-shadow: 6px 6px 0 #555, 0 20px 48px rgba(0,0,0,0.7); }
+
+  .polaroid-screen {
+    background: var(--darker);
+    border: 1px solid var(--graylight);
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--green);
+    padding: 0.6rem;
+    line-height: 1.7;
+  }
+  .polaroid-screen::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 40px;
+    background: linear-gradient(transparent, var(--darker));
+  }
+
+  .polaroid-title {
+    font-family: var(--pixel); font-size: 1.1rem;
+    color: #1a1612; margin-top: 0.8rem; line-height: 1.2;
+  }
+  .polaroid-date {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: #7a6a55; letter-spacing: 0.08em; margin-top: 0.2rem;
+  }
+  .polaroid-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 0.5rem; }
+  .tag {
+    font-family: var(--mono); font-size: 0.55rem;
+    padding: 2px 7px;
+    border: 1px solid;
+    letter-spacing: 0.06em;
+    border-radius: 2px;
+  }
+  .tag-g { color: var(--green); border-color: rgba(0,255,102,0.4); background: rgba(0,255,102,0.06); }
+  .tag-b { color: var(--blue);  border-color: rgba(0,207,255,0.4); background: rgba(0,207,255,0.06); }
+  .tag-p { color: var(--pink);  border-color: rgba(255,79,200,0.4); background: rgba(255,79,200,0.06); }
+
+  .pin {
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  .pin-g { background: radial-gradient(circle at 35% 35%, #88FF99, #00AA44); }
+  .pin-b { background: radial-gradient(circle at 35% 35%, #88DDFF, #0088BB); }
+  .pin-p { background: radial-gradient(circle at 35% 35%, #FF99EE, #CC0099); }
+
+  /* ─── SKILLS LAB ─── */
+  #skills { background: rgba(10,12,15,0.7); }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+  .skill-group-title {
+    font-family: var(--mono); font-size: 0.68rem;
+    color: var(--blue); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.8rem; padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(0,207,255,0.2);
+  }
+  .skill-item {
+    display: flex; align-items: center; gap: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+  .skill-name {
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--text); min-width: 120px;
+  }
+  .skill-bar-wrap {
+    flex: 1; height: 8px;
+    background: var(--gray);
+    border: 1px solid var(--graylight);
+    position: relative;
+    overflow: hidden;
+    image-rendering: pixelated;
+  }
+  .skill-bar {
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--fill) 0px, var(--fill) 6px,
+      transparent 6px, transparent 8px
+    );
+    animation: fillBar 1.2s ease-out forwards;
+    transform-origin: left;
+  }
+  @keyframes fillBar { from { width: 0 } }
+
+  .lang-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.5rem 0.7rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid var(--gray);
+    background: rgba(255,255,255,0.02);
+  }
+  .lang-left { font-family: var(--mono); font-size: 0.72rem; color: var(--text); }
+  .lang-level {
+    font-family: var(--pixel); font-size: 1rem;
+    letter-spacing: 0.08em;
+  }
+  .lang-dots { display: flex; gap: 4px; }
+  .lang-dot {
+    width: 9px; height: 9px;
+    border: 1px solid var(--graylight);
+    border-radius: 1px;
+  }
+  .lang-dot.filled { background: var(--green); box-shadow: 0 0 4px var(--green); border-color: var(--green); }
+
+  /* ─── TIMELINE ─── */
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--green), var(--blue), var(--pink), transparent);
+  }
+  .tl-item { position: relative; margin-bottom: 1.8rem; }
+  .tl-dot {
+    position: absolute; left: -2.4rem; top: 0.3rem;
+    width: 10px; height: 10px; border-radius: 1px;
+    transform: rotate(45deg);
+    border: 1px solid;
+  }
+  .tl-dot-g { background: var(--green); border-color: var(--green); box-shadow: 0 0 6px var(--green); }
+  .tl-dot-b { background: var(--blue);  border-color: var(--blue);  box-shadow: 0 0 6px var(--blue); }
+  .tl-dot-p { background: var(--pink);  border-color: var(--pink);  box-shadow: 0 0 6px var(--pink); }
+  .tl-dot-y { background: var(--yellow); border-color: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+
+  .tl-date {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: var(--graylight); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.15rem;
+  }
+  .tl-event {
+    font-family: var(--mono); font-size: 0.82rem; color: var(--text); font-weight: 500;
+  }
+  .tl-desc {
+    font-size: 0.78rem; color: #6a7a6a; margin-top: 0.2rem; line-height: 1.5;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid rgba(0,255,102,0.12);
+    padding: 3rem 2rem;
+    font-family: var(--mono);
+    background: rgba(6,8,9,0.9);
+  }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-term { font-size: 0.78rem; line-height: 2; }
+  .footer-cmd {
+    display: inline-block; font-size: 0.72rem;
+    padding: 6px 14px;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    margin: 0.3rem 0.5rem 0.3rem 0;
+  }
+  .footer-cmd:hover { background: var(--green); color: var(--dark); border-color: var(--green); }
+  .footer-cmd.blue { color: var(--blue); border-color: var(--blue); }
+  .footer-cmd.blue:hover { background: var(--blue); color: var(--dark); border-color: var(--blue); }
+  .footer-cmd.pink { color: var(--pink); border-color: var(--pink); }
+  .footer-cmd.pink:hover { background: var(--pink); color: var(--dark); border-color: var(--pink); }
+  .footer-cmd { color: var(--green); }
+  .copy {
+    font-size: 0.6rem; color: #3a4a3a; margin-top: 1.5rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── DIVIDER ─── */
+  .px-divider {
+    width: 100%; height: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--green) 0px, var(--green) 4px,
+      transparent 4px, transparent 8px
+    );
+    opacity: 0.2;
+    margin: 0;
+  }
+
+  /* ─── DECORATIVE BITS ─── */
+  .glitch-text {
+    position: relative; display: inline-block;
+  }
+  .glitch-text::before, .glitch-text::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0; width: 100%; overflow: hidden;
+    font-family: inherit; font-size: inherit;
+  }
+  .glitch-text::before {
+    color: var(--pink); clip: rect(0, 900px, 0, 0);
+    animation: glitch1 4s infinite;
+    left: 2px;
+  }
+  .glitch-text::after {
+    color: var(--blue); clip: rect(0, 900px, 0, 0);
+    animation: glitch2 4s infinite;
+    left: -2px;
+  }
+  @keyframes glitch1 {
+    0%,90%,100% { clip: rect(0,0,0,0); }
+    92% { clip: rect(30px, 900px, 36px, 0); transform: skewX(10deg); }
+    94% { clip: rect(10px, 900px, 16px, 0); transform: skewX(-8deg); }
+    96% { clip: rect(50px, 900px, 58px, 0); transform: skewX(5deg); }
+  }
+  @keyframes glitch2 {
+    0%,91%,100% { clip: rect(0,0,0,0); }
+    93% { clip: rect(20px, 900px, 28px, 0); transform: skewX(-12deg); }
+    95% { clip: rect(42px, 900px, 50px, 0); transform: skewX(9deg); }
+    97% { clip: rect(8px, 900px, 14px, 0); transform: skewX(-6deg); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-scrap { align-items: flex-start; }
+    #about .about-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    nav ul { display: none; }
+    .rip-card h1 { font-size: 2rem; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-in {
+    opacity: 0; transform: translateY(18px);
+    animation: fadeIn 0.7s ease forwards;
+  }
+  @keyframes fadeIn { to { opacity:1; transform:none; } }
+  .d1 { animation-delay: 0.1s; }
+  .d2 { animation-delay: 0.25s; }
+  .d3 { animation-delay: 0.4s; }
+  .d4 { animation-delay: 0.55s; }
+  .d5 { animation-delay: 0.7s; }
+
+  /* type animation */
+  .typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 2.5s steps(40, end) forwards;
+    max-width: fit-content;
+  }
+  @keyframes typing { from { width: 0 } to { width: 100% } }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="logo">HYF<span>.</span>dev</div>
+  <ul>
+    <li><a href="#about">about</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#community">community</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <div class="status">
+    <span class="dot"></span>
+    <span>sys:online | eg-minia-01</span>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-grid">
+    <!-- Terminal window -->
+    <div class="hero-terminal fade-in d1">
+      <div class="win-box">
+        <div class="win-bar">
+          <div class="win-btn close"></div>
+          <div class="win-btn min"></div>
+          <div class="win-btn max"></div>
+          <div class="win-title">bash — hala@minia-it — 80×24</div>
+        </div>
+        <div class="win-body">
+          <div class="term-line"><span class="prompt">hala@minia-it</span>:<span class="cmd">~</span>$ <span class="cmd">cat intro.txt</span></div>
+          <br>
+          <div class="term-line"><span class="comment"># ===================================</span></div>
+          <div class="term-line"><span class="comment">#  IDENTITY FILE :: v2025.9</span></div>
+          <div class="term-line"><span class="comment"># ===================================</span></div>
+          <div class="term-line"><span class="prompt">NAME        </span><span class="out">:</span> <span style="color:var(--yellow)">Hala Yasser Fouad</span></div>
+          <div class="term-line"><span class="prompt">ROLE        </span><span class="out">:</span> IT Student &amp; Aspiring Eng.</div>
+          <div class="term-line"><span class="prompt">INSTITUTE   </span><span class="out">:</span> Minia University</div>
+          <div class="term-line"><span class="prompt">LOCATION    </span><span class="out">:</span> Egypt 🇪🇬</div>
+          <div class="term-line"><span class="prompt">FOCUS       </span><span class="out">:</span> Software + Cybersecurity</div>
+          <div class="term-line"><span class="prompt">STATUS      </span><span class="out">:</span> <span style="color:var(--green)">AVAILABLE</span> for opportunities</div>
+          <br>
+          <div class="term-line"><span class="prompt">hala@minia-it</span>:<span class="cmd">~</span>$ <span class="cursor"></span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:1.2rem; display:flex; gap:0.6rem; flex-wrap:wrap;">
+        <span class="pixel-badge badge-green">IT_STUDENT</span>
+        <span class="pixel-badge badge-blue">HARDWARE</span>
+        <span class="pixel-badge badge-pink">CYBERSEC</span>
+      </div>
+    </div>
+
+    <!-- Scrapbook side -->
+    <div class="hero-scrap fade-in d2">
+      <div style="position:relative; margin-top:1rem;">
+        <div class="tape" style="position:absolute; top:-12px; left:20px; z-index:2;">★ PINNED ★</div>
+        <div class="rip-card">
+          <h1 class="glitch-text" data-text="HALA YASSER FOUAD">HALA YASSER FOUAD</h1>
+          <div class="tagline">// INFORMATION TECHNOLOGY STUDENT</div>
+          <div class="tagline">// ASPIRING SOFTWARE &amp; CYBERSECURITY ENGINEER</div>
+          <div class="loc">📍 Egypt &nbsp;·&nbsp; Minia University &nbsp;·&nbsp; BSc IT &nbsp;·&nbsp; '29</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:0.8rem; flex-wrap:wrap; margin-top:0.5rem;">
+        <div class="win-box" style="padding:0.7rem 1rem; font-family:var(--mono); font-size:0.65rem;">
+          <span style="color:var(--yellow)">🏆</span> Ranked <strong style="color:var(--green)">9th</strong> in school<br>
+          <span style="color:var(--graylight)">Secondary Education</span>
+        </div>
+        <div class="win-box" style="padding:0.7rem 1rem; font-family:var(--mono); font-size:0.65rem;">
+          <span style="color:var(--blue)">⚑</span> Batch <strong style="color:var(--blue)">Representative</strong><br>
+          <span style="color:var(--graylight)">Faculty Leader, Nov 2025→</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-label">01 &gt; about.exe</div>
+    <div class="section-title">$ whoami</div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a first-year <strong>IT student at Minia University</strong>, building at the intersection of <strong>software engineering</strong>, <strong>embedded systems</strong>, and <strong>cybersecurity</strong>. I tinker with microcontrollers and write code that bridges the physical and digital.
+        </p>
+        <p>
+          As the elected <strong>Batch Representative & Faculty Leader</strong> (Nov 2025→Present), I act as the primary liaison between students and faculty management — coordinating schedules, resolving academic issues, and helping peers debug everything from logic errors to life decisions.
+        </p>
+        <p>
+          I've ranked <strong>9th in my school</strong> during Thanaweya Amma, competed in ICPC training camps, shipped real hardware-software projects, and volunteered with Resala Charity. I believe in building things that matter — in code, in community, and in character.
+        </p>
+
+        <div style="margin-top:1.4rem;">
+          <div class="win-box" style="display:inline-block;">
+            <div class="win-bar"><div class="win-btn close"></div><div class="win-btn min"></div><div class="win-btn max"></div><div class="win-title">edu_record.log</div></div>
+            <div class="win-body" style="padding:0.8rem 1rem; font-family:var(--mono); font-size:0.68rem;">
+              <div class="term-line"><span class="prompt">degree  </span> BSc Information Technology</div>
+              <div class="term-line"><span class="prompt">faculty </span> CS &amp; IT, Minia University</div>
+              <div class="term-line"><span class="prompt">year    </span> 2025 → 2029 (expected)</div>
+              <div class="term-line"><span class="prompt">rank    </span> <span style="color:var(--yellow)">9th / class — Thanaweya Amma</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-card">
+          <div class="num">3+</div>
+          <div class="lbl">hardware &amp; software projects shipped</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">7+</div>
+          <div class="lbl">community events, summits &amp; hackathons</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">4</div>
+          <div class="lbl">languages spoken (Arabic · English · ES · KO)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ─── PROJECTS ─── -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-label">02 &gt; ls ./projects/</div>
+    <div class="section-title">$ open project_board/</div>
+
+    <div class="projects-grid">
+
+      <!-- ESP32 -->
+      <div class="polaroid fade-in d1" style="position:relative;">
+        <div class="pin pin-g"></div>
+        <div class="polaroid-screen">
+          <div>> INIT opencv stream...</div>
+          <div>> LOAD mediapipe hands model [OK]</div>
+          <div>> detect_hand_gestures(webcam)</div>
+          <div>> gesture: OPEN_PALM</div>
+          <div>> coord [x:423, y:189]</div>
+          <div>> serial.send(ESP32, coords)</div>
+          <div>> LED[3] = ON | LED[7] = OFF</div>
+          <div>> latency: 12ms ✓</div>
+        </div>
+        <div class="polaroid-title">ESP32 Hand-Tracking System</div>
+        <div class="polaroid-date">FEB 2026 // HARDWARE + CV</div>
+        <p style="font-size:0.7rem; color:#5a5040; margin-top:0.4rem; line-height:1.5;">
+          OpenCV + MediaPipe hand gestures → serial → ESP32 → LED control. Hardware meets vision in real-time.
+        </p>
+        <div class="polaroid-tags">
+          <span class="tag tag-g">Python</span>
+          <span class="tag tag-g">OpenCV</span>
+          <span class="tag tag-g">MediaPipe</span>
+          <span class="tag tag-b">C++</span>
+          <span class="tag tag-b">Arduino</span>
+          <span class="tag tag-b">Serial</span>
+        </div>
+      </div>
+
+      <!-- Pomodoro -->
+      <div class="polaroid fade-in d2" style="position:relative;">
+        <div class="pin pin-b"></div>
+        <div class="polaroid-screen" style="color:var(--blue);">
+          <div>&gt; pomodoro.py --start</div>
+          <div>&gt; SESSION: [WORK 25:00]</div>
+          <div style="color:var(--green);">&gt; ████████░░░░ 67%</div>
+          <div>&gt; time_left: 08:12</div>
+          <div>&gt; intervals: custom [25/5/15]</div>
+          <div>&gt; notifications: audio ON</div>
+          <div style="color:var(--yellow);">&gt; BREAK TIME — rest.exe</div>
+          <div>&gt; sessions_today: 4 ✓</div>
+        </div>
+        <div class="polaroid-title">Pomodoro Timer App</div>
+        <div class="polaroid-date">DEC 2025 // DESKTOP APP</div>
+        <p style="font-size:0.7rem; color:#5a5040; margin-top:0.4rem; line-height:1.5;">
+          Desktop productivity app with Tkinter GUI, dynamic countdown, custom intervals &amp; audio notifications.
+        </p>
+        <div class="polaroid-tags">
+          <span class="tag tag-g">Python</span>
+          <span class="tag tag-b">Tkinter</span>
+          <span class="tag tag-b">OS/Audio</span>
+          <span class="tag tag-g">Time</span>
+        </div>
+      </div>
+
+      <!-- Competitive -->
+      <div class="polaroid fade-in d3" style="position:relative;">
+        <div class="pin pin-p"></div>
+        <div class="polaroid-screen" style="color:var(--pink);">
+          <div>&gt; codeforces --solve 1842C</div>
+          <div>&gt; algorithm: freq_array</div>
+          <div style="color:var(--green);">&gt; verdict: ACCEPTED ✓</div>
+          <div>&gt; time: 46ms | mem: 2.1MB</div>
+          <div>&gt; icpc_minya --winter_camp</div>
+          <div>&gt; topic: DSA + graphs</div>
+          <div>&gt; problems_solved: 120+</div>
+          <div style="color:var(--yellow);">&gt; status: ONGOING...</div>
+        </div>
+        <div class="polaroid-title">Competitive Programming</div>
+        <div class="polaroid-date">ONGOING // ICPC + CODEFORCES</div>
+        <p style="font-size:0.7rem; color:#5a5040; margin-top:0.4rem; line-height:1.5;">
+          Active problem-solver on Codeforces, ICPC Minya community. Mastering DSA &amp; optimized algorithms.
+        </p>
+        <div class="polaroid-tags">
+          <span class="tag tag-p">C++</span>
+          <span class="tag tag-p">STL</span>
+          <span class="tag tag-p">DSA</span>
+          <span class="tag tag-b">ICPC</span>
+          <span class="tag tag-b">Codeforces</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ─── SKILLS LAB ─── -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-label">03 &gt; cat skills.inventory</div>
+    <div class="section-title">$ ./skills_lab --scan</div>
+
+    <div class="skills-grid">
+      <!-- Left column -->
+      <div>
+        <div class="win-box" style="margin-bottom:1.5rem;">
+          <div class="win-bar"><div class="win-btn close"></div><div class="win-btn min"></div><div class="win-btn max"></div><div class="win-title">programming.dat</div></div>
+          <div class="win-body">
+            <div class="skill-group-title">&gt; PROGRAMMING LANGUAGES</div>
+            <div class="skill-item">
+              <div class="skill-name">C++</div>
+              <div class="skill-bar-wrap"><div class="skill-bar" style="width:82%; --fill:var(--green)"></div></div>
+              <span style="font-family:var(--mono);font-size:0.6rem;color:var(--green);">82%</span>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">Python</div>
+              <div class="skill-bar-wrap"><div class="skill-bar" style="width:78%; --fill:var(--blue)"></div></div>
+              <span style="font-family:var(--mono);font-size:0.6rem;color:var(--blue);">78%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="win-box">
+          <div class="win-bar"><div class="win-btn close"></div><div class="win-btn min"></div><div class="win-btn max"></div><div class="win-title">hardware.dat</div></div>
+          <div class="win-body">
+            <div class="skill-group-title">&gt; HARDWARE &amp; EMBEDDED SYSTEMS</div>
+            <div class="skill-item">
+              <div class="skill-name">Arduino IDE</div>
+              <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%; --fill:var(--green)"></div></div>
+              <span style="font-family:var(--mono);font-size:0.6rem;color:var(--green);">75%</span>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">ESP32</div>
+              <div class="skill-bar-wrap"><div class="skill-bar" style="width:70%; --fill:var(--pink)"></div></div>
+              <span style="font-family:var(--mono);font-size:0.6rem;color:var(--pink);">70%</span>
+            </div>
+            <div class="skill-item">
+              <div class="skill-name">Circuit Design</div>
+              <div class="skill-bar-wrap"><div class="skill-bar" style="width:60%; --fill:var(--yellow)"></div></div>
+              <span style="font-family:var(--mono);font-size:0.6rem;color:var(--yellow);">60%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div>
+        <div class="win-box" style="margin-bottom:1.5rem;">
+          <div class="win-bar"><div class="win-btn close"></div><div class="win-btn min"></div><div class="win-btn max"></div><div class="win-title">tools.dat</div></div>
+          <div class="win-body">
+            <div class="skill-group-title">&gt; SOFTWARE &amp; TOOLS</div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <span class="tag tag-g" style="padding:4px 10px;">Git</span>
+              <span class="tag tag-g" style="padding:4px 10px;">GitHub</span>
+              <span class="tag tag-b" style="padding:4px 10px;">VS Code</span>
+              <span class="tag tag-b" style="padding:4px 10px;">TryHackMe</span>
+              <span class="tag tag-g" style="padding:4px 10px;">OpenCV</span>
+              <span class="tag tag-g" style="padding:4px 10px;">MediaPipe</span>
+              <span class="tag tag-b" style="padding:4px 10px;">Tkinter</span>
+              <span class="tag tag-p" style="padding:4px 10px;">GNU C++</span>
+              <span class="tag tag-p" style="padding:4px 10px;">STL</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="win-box">
+          <div class="win-bar"><div class="win-btn close"></div><div class="win-btn min"></div><div class="win-btn max"></div><div class="win-title">languages.dat</div></div>
+          <div class="win-body">
+            <div class="skill-group-title">&gt; LANGUAGE PROFICIENCIES</div>
+
+            <div class="lang-item">
+              <div class="lang-left">Arabic &nbsp;<span style="color:var(--graylight)">// native</span></div>
+              <div class="lang-dots">
+                <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+                <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+                <div class="lang-dot filled"></div>
+              </div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-left">English &nbsp;<span style="color:var(--graylight)">// fluent</span></div>
+              <div class="lang-dots">
+                <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+                <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+                <div class="lang-dot" style="background:transparent;"></div>
+              </div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-left">Spanish &nbsp;<span style="color:var(--graylight)">// A2</span></div>
+              <div class="lang-dots">
+                <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+                <div class="lang-dot"></div><div class="lang-dot"></div>
+                <div class="lang-dot"></div>
+              </div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-left">Korean &nbsp;<span style="color:var(--graylight)">// A2</span></div>
+              <div class="lang-dots">
+                <div class="lang-dot filled"></div><div class="lang-dot filled"></div>
+                <div class="lang-dot"></div><div class="lang-dot"></div>
+                <div class="lang-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ─── COMMUNITY TIMELINE ─── -->
+<section id="community">
+  <div class="section-wrap">
+    <div class="section-label">04 &gt; git log --community</div>
+    <div class="section-title">$ grep -r "milestones" ./life/</div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:2.5rem;">
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-dot tl-dot-b"></div>
+          <div class="tl-date">May 2026</div>
+          <div class="tl-event">Next Scholar Summit</div>
+          <div class="tl-desc">Participant · Nile University</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot tl-dot-g"></div>
+          <div class="tl-date">Feb 2026 → Present</div>
+          <div class="tl-event">Volunteer · Resala Charity</div>
+          <div class="tl-desc">Community aid, collaboration, and outreach programs.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot tl-dot-p"></div>
+          <div class="tl-date">April 2026</div>
+          <div class="tl-event">Visionaries Event</div>
+          <div class="tl-desc">Attendee · Dar Ulum</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot tl-dot-y"></div>
+          <div class="tl-date">March 2026</div>
+          <div class="tl-event">It Is On Summit</div>
+          <div class="tl-desc">Attendee — tech innovation summit.</div>
+        </div>
+
+      </div>
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-dot tl-dot-b"></div>
+          <div class="tl-date">Jan 2026</div>
+          <div class="tl-event">AI Dev Days Hackathon</div>
+          <div class="tl-desc">Registered Hacker · by Microsoft. Collaborated on AI-driven projects.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot tl-dot-g"></div>
+          <div class="tl-date">Jan 2026</div>
+          <div class="tl-event">ICPC Minya Winter Camp</div>
+          <div class="tl-desc">Newcomer Trainee · Intensive algorithmic problem-solving training.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot tl-dot-p"></div>
+          <div class="tl-date">Jan 2026</div>
+          <div class="tl-event">InnovEgypt Graduate</div>
+          <div class="tl-desc">CREATIVA Center, Minia University · Entrepreneurship &amp; innovation methodologies.</div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot tl-dot-y"></div>
+          <div class="tl-date">Nov 2025 → Present</div>
+          <div class="tl-event">Batch Representative</div>
+          <div class="tl-desc">Faculty Leader · Minia University</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ─── FOOTER / CONTACT ─── -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="section-label">05 &gt; contact --help</div>
+
+    <div class="win-box" style="margin-bottom:1.5rem; display:inline-block;">
+      <div class="win-bar"><div class="win-btn close"></div><div class="win-btn min"></div><div class="win-btn max"></div><div class="win-title">contact_shell — hala@minia-it</div></div>
+      <div class="win-body">
+        <div class="footer-term">
+          <div class="term-line"><span class="prompt">hala@minia-it</span>:<span class="cmd">~</span>$ <span class="cmd">connect --list</span></div>
+          <br>
+          <div class="term-line"><span class="prompt">  [1]</span> <span class="out">email    </span> <span style="color:var(--yellow)">→ h7ala.yasser@gmail.com</span></div>
+          <div class="term-line"><span class="prompt">  [2]</span> <span class="out">github   </span> <span style="color:var(--yellow)">→ github.com/hala705</span></div>
+          <div class="term-line"><span class="prompt">  [3]</span> <span class="out">linkedin </span> <span style="color:var(--yellow)">→ linkedin.com/in/hala-yasserr</span></div>
+          <div class="term-line"><span class="prompt">  [4]</span> <span class="out">phone    </span> <span style="color:var(--yellow)">→ +20 109 298 2300</span></div>
+          <br>
+          <div class="term-line"><span class="comment"># run connect --open [id] to launch</span></div>
+        </div>
+        <div style="margin-top:1rem;">
+          <a href="mailto:h7ala.yasser@gmail.com" class="footer-cmd">./connect email</a>
+          <a href="https://github.com/hala705" target="_blank" class="footer-cmd blue">./connect github</a>
+          <a href="https://www.linkedin.com/in/hala-yasserr" target="_blank" class="footer-cmd pink">./connect linkedin</a>
+          <a href="tel:+201092982300" class="footer-cmd" style="color:var(--yellow); border-color:var(--yellow);" onmouseover="this.style.background='var(--yellow)';this.style.color='var(--dark)';" onmouseout="this.style.background='';this.style.color='var(--yellow)';">./connect phone</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="copy">
+      &copy; 2025–2026 HALA YASSER FOUAD &nbsp;·&nbsp; BUILT WITH CAFFEINE, C++, AND CURIOSITY &nbsp;·&nbsp; EG-MINIA-01
+    </div>
+  </div>
+</footer>
+
+<script>
+// Intersection Observer for fade-in on scroll
+const els = document.querySelectorAll('.polaroid, .tl-item, .stat-card, .skill-item, .lang-item');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '0';
+      e.target.style.transform = (e.target.classList.contains('polaroid') ? e.target.style.transform + '' : 'translateY(14px)');
+      setTimeout(() => {
+        e.target.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        e.target.style.opacity = '1';
+        if (!e.target.classList.contains('polaroid')) e.target.style.transform = 'none';
+      }, 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+els.forEach(el => { el.style.opacity = '0'; obs.observe(el); });
+
+// Active nav
+document.querySelectorAll('nav ul li a').forEach(a => {
+  a.addEventListener('click', function() {
+    document.querySelectorAll('nav ul li a').forEach(x => x.style.color = '');
+    this.style.color = 'var(--green)';
+  });
+});
+</script>
+
+</body>
+</html>
